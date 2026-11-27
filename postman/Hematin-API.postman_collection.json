@@ -1,0 +1,450 @@
+{
+  "info": {
+    "name": "Hematin REST API (Study Club Backend Basic - UPNVJ 2026)",
+    "_postman_id": "d4e8123a-6b19-4f7c-9b2a-202611270001",
+    "description": "Koleksi lengkap pengujian REST API Hematin (Node.js, ExpressJS, MongoDB) mencakup operasi CRUD, Path Parameter, Query Parameter, validasi HTTP Status Code (200, 201, 400, 404), serta fitur bonus OCR Struk, AI Advisor, Budget, Target Tabungan, dan Hutang-Piutang.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "transactionId", "value": "" },
+    { "key": "goalId", "value": "" },
+    { "key": "debtId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "01. Health Check",
+      "item": [
+        {
+          "name": "Check API & MongoDB Connection",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Transactions (Core CRUD + Path & Query Params)",
+      "item": [
+        {
+          "name": "1. CREATE - Tambah Pemasukan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('Status code is 201 Created', () => pm.response.to.have.status(201));",
+                  "if (json && json.data && json.data._id) {",
+                  "  pm.collectionVariables.set('transactionId', json.data._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"pemasukan\",\n  \"category\": \"Gaji\",\n  \"amount\": 1500000,\n  \"note\": \"Uang Saku Bulanan\",\n  \"date\": \"2026-11-20\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+          }
+        },
+        {
+          "name": "2. CREATE - Tambah Pengeluaran",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('Status code is 201 Created', () => pm.response.to.have.status(201));",
+                  "if (json && json.data && json.data._id) {",
+                  "  pm.collectionVariables.set('transactionId', json.data._id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"pengeluaran\",\n  \"category\": \"Makanan\",\n  \"amount\": 25000,\n  \"note\": \"Nasi Padang Kantin UPNVJ\",\n  \"date\": \"2026-11-20\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+          }
+        },
+        {
+          "name": "3. READ ALL - Ambil Semua Transaksi",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+          }
+        },
+        {
+          "name": "4. READ + QUERY PARAM - Filter Type & Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transactions?type=pengeluaran&category=Makanan",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions"],
+              "query": [
+                { "key": "type", "value": "pengeluaran" },
+                { "key": "category", "value": "Makanan" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "5. READ + QUERY PARAM - Search & Sort",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transactions?search=nasi&sortBy=amount&order=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions"],
+              "query": [
+                { "key": "search", "value": "nasi" },
+                { "key": "sortBy", "value": "amount" },
+                { "key": "order", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "6. READ SUMMARY - Ringkasan Keuangan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "summary"]
+            }
+          }
+        },
+        {
+          "name": "7. READ BY PATH PARAM - Detail 1 Transaksi (:id)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/{{transactionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "{{transactionId}}"]
+            }
+          }
+        },
+        {
+          "name": "8. UPDATE (PUT) - Edit Transaksi (:id)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 30000,\n  \"note\": \"Nasi Padang + Es Teh Manis\",\n  \"category\": \"Makanan\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transactions/{{transactionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "{{transactionId}}"]
+            }
+          }
+        },
+        {
+          "name": "9. DELETE - Hapus Transaksi (:id)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/{{transactionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "{{transactionId}}"]
+            }
+          }
+        },
+        {
+          "name": "10. ERROR TEST (400) - Input Tidak Valid",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"salah\",\n  \"amount\": -5000\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+          }
+        },
+        {
+          "name": "11. ERROR TEST (400) - Format ObjectId Salah",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/id-asal-salah",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "id-asal-salah"]
+            }
+          }
+        },
+        {
+          "name": "12. ERROR TEST (404) - ID Tidak Ditemukan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/507f1f77bcf86cd799439011",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "507f1f77bcf86cd799439011"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Budget & Daily Limits",
+      "item": [
+        {
+          "name": "GET Budget Setting",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/budget", "host": ["{{baseUrl}}"], "path": ["budget"] }
+          }
+        },
+        {
+          "name": "PUT Setup / Update Budget",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mode\": \"harian\",\n  \"limitValue\": 50000,\n  \"autoSaveRemainingLimit\": true\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/budget", "host": ["{{baseUrl}}"], "path": ["budget"] }
+          }
+        },
+        {
+          "name": "PATCH Daily Limit per Date (:date)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"limitValue\": 75000\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/budget/daily-limit/2026-11-20",
+              "host": ["{{baseUrl}}"],
+              "path": ["budget", "daily-limit", "2026-11-20"]
+            }
+          }
+        },
+        {
+          "name": "POST Run Auto-Save Sisa Limit",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/budget/auto-save", "host": ["{{baseUrl}}"], "path": ["budget", "auto-save"] }
+          }
+        },
+        {
+          "name": "DELETE Reset Budget",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/budget/reset", "host": ["{{baseUrl}}"], "path": ["budget", "reset"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Saving Goals (Target Tabungan)",
+      "item": [
+        {
+          "name": "POST Create Goal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.data && json.data._id) pm.collectionVariables.set('goalId', json.data._id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Beli Laptop Kuliah\",\n  \"targetAmount\": 7000000,\n  \"icon\": \"target\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/goals", "host": ["{{baseUrl}}"], "path": ["goals"] }
+          }
+        },
+        {
+          "name": "GET All Goals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/goals", "host": ["{{baseUrl}}"], "path": ["goals"] }
+          }
+        },
+        {
+          "name": "PATCH Deposit Goal (:id)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 250000\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/goals/{{goalId}}/deposit",
+              "host": ["{{baseUrl}}"],
+              "path": ["goals", "{{goalId}}", "deposit"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Goal (:id)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/goals/{{goalId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["goals", "{{goalId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Debts (Hutang-Piutang)",
+      "item": [
+        {
+          "name": "POST Create Debt",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.data && json.data._id) pm.collectionVariables.set('debtId', json.data._id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"person\": \"Andi\",\n  \"amount\": 50000,\n  \"type\": \"piutang\",\n  \"note\": \"Talangin makan siang\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/debts", "host": ["{{baseUrl}}"], "path": ["debts"] }
+          }
+        },
+        {
+          "name": "GET Debts with Query Filter",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/debts?type=piutang&isPaid=false",
+              "host": ["{{baseUrl}}"],
+              "path": ["debts"],
+              "query": [
+                { "key": "type", "value": "piutang" },
+                { "key": "isPaid", "value": "false" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "PATCH Toggle Paid (:id)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/debts/{{debtId}}/toggle-paid",
+              "host": ["{{baseUrl}}"],
+              "path": ["debts", "{{debtId}}", "toggle-paid"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Debt (:id)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/debts/{{debtId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["debts", "{{debtId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06. OCR Receipt Parser & AI Advisor",
+      "item": [
+        {
+          "name": "POST Parse Raw Receipt Text (OCR)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rawText\": \"INDOMARET PONDOK LABU\\n20/11/2026 12:30\\nAQUA 600ML 4.000\\nROTI TAWAR SARI ROTI 15.000\\nGRAND TOTAL Rp 19.000\\nTUNAI 50.000\\nKEMBALI 31.000\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/ocr/parse", "host": ["{{baseUrl}}"], "path": ["ocr", "parse"] }
+          }
+        },
+        {
+          "name": "POST AI Financial Advisor (Gemini)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"Beri analisis pengeluaran saya dan tips hemat minggu ini\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/ai/advisor", "host": ["{{baseUrl}}"], "path": ["ai", "advisor"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "07. Data Export & Backup",
+      "item": [
+        {
+          "name": "GET Export All Data JSON",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/data/export", "host": ["{{baseUrl}}"], "path": ["data", "export"] }
+          }
+        }
+      ]
+    }
+  ]
+}
+

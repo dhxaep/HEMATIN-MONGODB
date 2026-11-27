@@ -1,0 +1,17 @@
+{
+  "name": "Hematin — Smart Personal Finance (MongoDB)",
+  "short_name": "Hematin",
+  "description": "Web application pengatur keuangan pribadi berbasis Next.js, ExpressJS REST API, dan MongoDB dengan OCR scan struk.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#8f8df7",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
