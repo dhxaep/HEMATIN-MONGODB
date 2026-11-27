@@ -1,4 +1,4 @@
-# Dokumentasi Database & Sistem Backend — Hematin (MongoDB + ExpressJS)
+# Dokumentasi Database & Sistem Backend - Hematin (MongoDB + ExpressJS)
 
 Dokumen ini merupakan panduan lengkap struktur database, collection, schema, endpoint REST API, HTTP Method, serta skenario demo presentasi menggunakan **MongoDB Compass** untuk Final Project **Hematin**.
 
@@ -103,7 +103,7 @@ Dokumen ini merupakan panduan lengkap struktur database, collection, schema, end
 - **Catatan Penting untuk Presentasi:**
   - Collection ini menggunakan pola *singleton document* dengan `key: "default"`.
   - **`limitValue`** adalah **Limit Global** (diatur dari menu Pengaturan / Setup Anggaran).
-  - **`dateLimits`** adalah tipe **`Map<String, Number>`** yang menyimpan **Limit Khusus per tanggal** (`"YYYY-MM-DD": nominal`). Saat user mengubah limit di Kalender, hanya `dateLimits[tanggal]` yang berubah — `limitValue` global **tidak ikut berubah**. Jika user klik **Reset** di Kalender, key tanggal tersebut dihapus dari `dateLimits` sehingga kembali mengikuti `limitValue`.
+  - **`dateLimits`** adalah tipe **`Map<String, Number>`** yang menyimpan **Limit Khusus per tanggal** (`"YYYY-MM-DD": nominal`). Saat user mengubah limit di Kalender, hanya `dateLimits[tanggal]` yang berubah, sedangkan `limitValue` global **tidak ikut berubah**. Jika user klik **Reset** di Kalender, key tanggal tersebut dihapus dari `dateLimits` sehingga kembali mengikuti `limitValue`.
 
 | Field | Tipe Data | Wajib | Default / Validasi | Keterangan |
 | --- | --- | --- | --- | --- |
@@ -235,7 +235,7 @@ Dokumen ini merupakan panduan lengkap struktur database, collection, schema, end
 ### 4.2 Analytics (`MongoDB Aggregation Pipeline`)
 | Method | Endpoint | Operasi Mongoose | Status Code | Fungsi |
 | --- | --- | --- | --- | --- |
-| `GET` | `/api/analytics/summary` | `Transaction.aggregate([{ $match }, { $facet }])` | `200`, `500` | Hitung total cashflow, saving rate, daily burn-rate 30 hari, estimasi runway saldo, top 5 kategori, tren 6 bulan, & Financial Health Score (0–100) dalam 1 query |
+| `GET` | `/api/analytics/summary` | `Transaction.aggregate([{ $match }, { $facet }])` | `200`, `500` | Hitung total cashflow, saving rate, daily burn-rate 30 hari, estimasi runway saldo, top 5 kategori, tren 6 bulan, & Financial Health Score (0-100) dalam 1 query |
 
 ### 4.3 Transactions (`collection: transactions`)
 | Method | Endpoint | Path / Query / Header | Operasi Mongoose | Status Code | Fungsi |
@@ -296,23 +296,23 @@ Dokumen ini merupakan panduan lengkap struktur database, collection, schema, end
 
 Saat demo di tab **Documents** pada MongoDB Compass, kamu bisa mengetik filter ini di kolom **Filter**:
 
-- **Collection `transactions` — hanya pengeluaran:**
+- **Collection `transactions` - hanya pengeluaran:**
   ```json
   { "type": "pengeluaran" }
   ```
-- **Collection `transactions` — pengeluaran kategori Makanan di atas Rp 20.000:**
+- **Collection `transactions` - pengeluaran kategori Makanan di atas Rp 20.000:**
   ```json
   { "type": "pengeluaran", "category": "Makanan", "amount": { "$gte": 20000 } }
   ```
-- **Collection `transactions` — transaksi pada tanggal tertentu:**
+- **Collection `transactions` - transaksi pada tanggal tertentu:**
   ```json
   { "date": "2026-11-20" }
   ```
-- **Collection `budgetsettings` — dokumen konfigurasi utama:**
+- **Collection `budgetsettings` - dokumen konfigurasi utama:**
   ```json
   { "key": "default" }
   ```
-- **Collection `debts` — hutang yang belum lunas:**
+- **Collection `debts` - hutang yang belum lunas:**
   ```json
   { "type": "hutang", "isPaid": false }
   ```
@@ -321,7 +321,7 @@ Saat demo di tab **Documents** pada MongoDB Compass, kamu bisa mengetik filter i
 
 ## 6. Skenario Urutan Demo Presentasi di MongoDB Compass
 
-Urutan ini efektif untuk presentasi 3–5 menit agar juri/mentor langsung melihat integrasi penuh **ExpressJS + MongoDB**:
+Urutan ini efektif untuk presentasi 3-5 menit agar juri/mentor langsung melihat integrasi penuh **ExpressJS + MongoDB**:
 
 1. **Tunjukkan Koneksi & Struktur DB:**
    - Buka **MongoDB Compass** -> arahkan ke database `hematin`.

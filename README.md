@@ -1,6 +1,12 @@
-# 💸 Hematin REST API — Personal Finance Manager
+<p align="center">
+  <img src="frontend/public/favicon.png" alt="Hematin Logo" width="120" height="120" />
+</p>
 
-**Final Project Study Club Backend Basic — Kabinet Genesis KSM Veterantech UPNVJ 2026**
+<h1 align="center">Hematin REST API - Personal Finance Manager</h1>
+
+<p align="center">
+  <strong>Final Project Study Club Backend Basic - Kabinet Genesis KSM Veterantech UPNVJ 2026</strong>
+</p>
 
 **Hematin** adalah aplikasi manajemen keuangan pribadi yang dimigrasikan dari arsitektur *LocalStorage* menjadi aplikasi **Backend Web Development berbasis REST API** menggunakan **Node.js, ExpressJS, dan MongoDB**, dilengkapi antarmuka **Next.js** *(bonus fullstack)*, pemindai struk belanja **OCR (Tesseract.js + Deterministic Receipt Parser)**, serta **Financial Advisor Engine**.
 
@@ -91,7 +97,7 @@ HEMATIN-MONGODB/
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/<username-github-kamu>/<nama-repo>.git
+git clone https://github.com/dhxaep/HEMATIN-MONGODB.git
 cd HEMATIN-MONGODB
 ```
 
@@ -148,7 +154,7 @@ Base URL: `http://localhost:5000/api`
 |---|---|---|---|
 | `GET` | `/api/health` | Mengecek status server Express dan koneksi MongoDB | `200` |
 
-### B. Transactions — Core CRUD, Path Parameter & Query Parameter
+### B. Transactions - Core CRUD, Path Parameter & Query Parameter
 | Method | Endpoint | Fungsi | Parameter | Status Code |
 |---|---|---|---|---|
 | `POST` | `/api/transactions` | **CREATE:** Menambahkan data transaksi baru | Body JSON (`type`, `category`, `amount`, `note`, `date`) | `201`, `400`, `500` |
@@ -233,5 +239,5 @@ File koleksi Postman siap pakai sudah disediakan di:
 
 ---
 
-**Dibuat oleh:** Dhafa Achmad Ghifari — KSM Veterantech UPNVJ 2026
+**Dibuat oleh:** Dhafa Achmad Ghifari - KSM Veterantech UPNVJ 2026
 
