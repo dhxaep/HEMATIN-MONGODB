@@ -227,17 +227,5 @@ Base URL: `http://localhost:5000/api`
 
 ---
 
-## 📮 Pengujian API dengan Postman
-
-File koleksi Postman siap pakai sudah disediakan di:
-`postman/Hematin-API.postman_collection.json`
-
-1. Buka aplikasi **Postman**.
-2. Klik **Import** -> pilih file `postman/Hematin-API.postman_collection.json`.
-3. Pastikan server backend sedang berjalan (`npm run dev:backend`).
-4. Jalankan seluruh request dari folder `01. Health Check` hingga `07. Data Export & Backup` (termasuk pengujian error `400` dan `404`).
-
----
-
 **Dibuat oleh:** Dhafa Achmad Ghifari - KSM Veterantech UPNVJ 2026
 
